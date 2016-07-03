@@ -40,4 +40,13 @@ public class AttrObjectReference implements Serializable {
     public Long getReferences() {
         return references;
     }
+
+    @Override
+    public String toString() {
+        return "AttrObjectReference{" +
+                "atttId=" + atttId +
+                ", objectId=" + objectId +
+                ", references=" + references +
+                '}';
+    }
 }

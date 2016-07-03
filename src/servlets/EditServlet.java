@@ -80,8 +80,6 @@ public class EditServlet extends HttpServlet implements javax.servlet.Servlet {
                 AttrObject attrObject = new AttrObject(newAttrId,objectId);
                 paramsI.update(new TTParams(attrObject,0L,Utils.toUTF8Request(parameters.get(parameter)[0])));
             }
-            /*RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.forward(request, response);*/
         }
 
         String userName = null;

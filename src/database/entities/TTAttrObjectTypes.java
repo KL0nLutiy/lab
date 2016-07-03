@@ -72,4 +72,16 @@ public class TTAttrObjectTypes {
     public void setFlags(Long flags) {
         this.flags = flags;
     }
+
+    @Override
+    public String toString() {
+        return "TTAttrObjectTypes{" +
+                "attrObjectType=" + attrObjectType +
+                ", isDisplayed=" + isDisplayed +
+                ", isRequired=" + isRequired +
+                ", options=" + options +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", flags=" + flags +
+                '}';
+    }
 }

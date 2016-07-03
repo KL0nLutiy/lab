@@ -30,4 +30,12 @@ public class AttrObjectType implements Serializable {
     public Long getObjectTypeId() {
         return objectTypeId;
     }
+
+    @Override
+    public String toString() {
+        return "AttrObjectType{" +
+                "atttId=" + atttId +
+                ", objectTypeId=" + objectTypeId +
+                '}';
+    }
 }

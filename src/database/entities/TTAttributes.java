@@ -9,6 +9,7 @@ import java.io.Serializable;
 /**
  * Created by Vlad on 24.06.2016.
  */
+
 @Entity
 @Table(name="TT_ATTRIBUTES")
 public class TTAttributes implements Serializable {
@@ -243,5 +244,33 @@ public class TTAttributes implements Serializable {
 
     public void setInternalName(String internalName) {
         this.internalName = internalName;
+    }
+
+    @Override
+    public String toString() {
+        return "TTAttributes{" +
+                "attrId=" + attrId +
+                ", name='" + name + '\'' +
+                ", attrAccessType=" + attrAccessType +
+                ", isMultiple=" + isMultiple +
+                ", isExtGenerated=" + isExtGenerated +
+                ", isExtStored=" + isExtStored +
+                ", adapterName='" + adapterName + '\'' +
+                ", params='" + params + '\'' +
+                ", uniqueLevel=" + uniqueLevel +
+                ", showOrder=" + showOrder +
+                ", showHistory=" + showHistory +
+                ", isSearchable=" + isSearchable +
+                ", mask='" + mask + '\'' +
+                ", defValue='" + defValue + '\'' +
+                ", flags=" + flags +
+                ", description='" + description + '\'' +
+                ", properties='" + properties + '\'' +
+                ", rules=" + rules +
+                ", tooltip='" + tooltip + '\'' +
+                ", avAdapterName='" + avAdapterName + '\'' +
+                ", avAdapterProperties='" + avAdapterProperties + '\'' +
+                ", internalName='" + internalName + '\'' +
+                '}';
     }
 }

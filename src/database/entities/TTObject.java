@@ -106,4 +106,19 @@ public class TTObject implements Serializable {
     public void setVersion(Long version) {
         this.version = version;
     }
+
+    @Override
+    public String toString() {
+        return "TTObject{" +
+                "objectId=" + objectId +
+                ", parentId=" + parentId +
+                ", objectTypeId=" + objectTypeId +
+                ", objectClassId=" + objectClassId +
+                ", projectId=" + projectId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", version=" + version +
+                '}';
+    }
 }

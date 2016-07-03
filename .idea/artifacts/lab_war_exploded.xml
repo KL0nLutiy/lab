@@ -12,6 +12,9 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="log4j" />
         </element>
+        <element id="directory" name="javadoc">
+          <element id="dir-copy" path="$PROJECT_DIR$/javadoc" />
+        </element>
       </element>
     </root>
   </artifact>

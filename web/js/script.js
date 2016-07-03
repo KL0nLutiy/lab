@@ -19,8 +19,29 @@ function BeforeAdd(element){
     //window.location.replace("index.jsp");
 }
 
-function AddFields() {
-    alert("here");
+function AddFields(element) {
+    var form = $(element).parent();
+
+    $('<div class="row">' +
+    '<div class="input-field col s6">' +
+    '<input type="text" class="validate" onkeyup="AddNameChange(this)">' +
+    '</div>' +
+    '<div class="input-field col s6">' +
+    '<input type="text" class="validate">'+
+    '</div>').insertBefore($( "#fieldAdd" ));
+
+    /*form.insertBefore('<div class="row">' +
+        '<div class="input-field col s6">' +
+        '<input type="text" class="validate" onkeyup="AddNameChange(this)">' +
+        '</div>' +
+        '<div class="input-field col s6">' +
+        '<input type="text" class="validate">'+
+        '</div>',);*/
+}
+
+function AddNameChange(element){
+    var inputToChange = $(element).parent().next().children().eq(0);
+    inputToChange.attr("name", $(element).val());
 }
 
 function Search() {

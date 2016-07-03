@@ -286,14 +286,16 @@
                 </select>
                 </form>
                 <form action="add" method="post" enctype="multipart/form-data" onsubmit="BeforeAdd(this)">
+                    <%
+                        if(list!=null) {
+                    %>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="name" name="name" type="text" class="validate">
+                            <input id="name" name="name" type="text" class="validate" required>
                             <label for="name">Name</label>
                         </div>
                     </div>
                     <%
-                        if(list!=null) {
                             for(String s: list) {
                                 if(s.equals("phone_id") || s.equals("accsesories_id") || s.equals("component_id") || s.equals("create_date") || s.equals("change_date") || s.equals("create_by") || s.equals("change_by")) {
                                     continue;
@@ -304,7 +306,7 @@
                     <div class="file-field input-field">
                         <div class="btn">
                             <span>Image</span>
-                            <input name="file" type="file">
+                            <input name="file" type="file" required>
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text">
@@ -322,11 +324,16 @@
                     </div>
                     <%
                             }
-                        }
                     %>
+                    <button id="fieldAdd" class="btn waves-effect waves-light" type="button" name="action" onclick="AddFields(this)">New field
+                        <i class="material-icons left">add</i>
+                    </button>
                     <button id="loginSubmit" class="btn waves-effect waves-light" type="submit" name="action">Submit
                         <i class="material-icons right">send</i>
                     </button>
+                    <%
+                        }
+                    %>
                 </form>
             </div>
         </div>

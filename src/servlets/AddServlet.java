@@ -7,13 +7,12 @@ import database.entities.TTObject;
 import database.entities.TTParams;
 import database.entities.embeded.AttrObject;
 import database.entities.embeded.AttrObjectType;
+import database.impl.TTAttributesImpl;
 import database.interfaces.TTAttrObjectTypeInterface;
 import database.interfaces.TTAttributeInterface;
 import database.interfaces.TTObjectInterface;
 import database.interfaces.TTParamsInterface;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import utils.Utils;
 
 import javax.ejb.EJB;
@@ -32,6 +31,8 @@ import java.util.Map;
 
 @MultipartConfig
 public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
+
+    private static final Logger log = Logger.getLogger(AddServlet.class);
 
     @EJB
     TTObjectInterface objectI;
@@ -69,22 +70,65 @@ public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
         object.setName(Utils.toUTF8Request(parameters.get("name")[0]));
         Long objectId = objectI.create(object);
 
-        dbWorker.close();
+        String imgPath = getServletConfig().getServletContext().getRealPath("");
 
-        /*String imgPath = getServletConfig().getServletContext().getRealPath("");
+        Part filePart = request.getPart("file");
+        InputStream fileContent = filePart.getInputStream();
+        OutputStream outputStream = null;
+
+        try {
+
+            outputStream =
+                    new FileOutputStream(new File(imgPath+"\\img\\"+objectId+".jpg"));
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = fileContent.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            log.info("Img for object id: "+objectId+" added success");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("Can't add img for object id: "+objectId+" "+e.getMessage());
+        } finally {
+            if (fileContent != null) {
+                try {
+                    fileContent.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        paramsI.create(new TTParams(new AttrObject(40L,objectId),dbWorker.getAttrAccessType(40L),"img/"+objectId+".jpg"));
+
+
 
         for(String parameter : parameters.keySet()) {
-            if(parameter.equals("action") || parameter.equals("name")) {
+            if(parameter.equals("action") || parameter.equals("name") || parameter.equals("file") || parameter.equals("goodsType")) {
                 continue;
             }
 
             Long attrId;
 
             if((attrId=dbWorker.getAttrIdForName(parameter))!=0L) {
+                if(Utils.toUTF8Request(parameters.get(parameter)[0]).equals("")) {
+                    continue;
+                }
                 AttrObject attrObject = new AttrObject(attrId,objectId);
-                paramsI.update(new TTParams(attrObject,dbWorker.getAttrAccessType(attrId),Utils.toUTF8Request(parameters.get(parameter)[0])));
+                paramsI.create(new TTParams(attrObject,dbWorker.getAttrAccessType(attrId),Utils.toUTF8Request(parameters.get(parameter)[0])));
             } else {
-                System.out.println(parameter);
                 Long newAttrId = attributeI.create(new TTAttributes(parameter,0L));
 
                 TTAttrObjectTypes attrObjectTypes = new TTAttrObjectTypes();
@@ -92,7 +136,7 @@ public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
                 attrObjectTypeI.create(attrObjectTypes);
 
                 AttrObject attrObject = new AttrObject(newAttrId,objectId);
-                paramsI.update(new TTParams(attrObject,0L,Utils.toUTF8Request(parameters.get(parameter)[0])));
+                paramsI.create(new TTParams(attrObject,0L,Utils.toUTF8Request(parameters.get(parameter)[0])));
             }
         }
 
@@ -106,47 +150,14 @@ public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
             }
         }
 
-        paramsI.update(new TTParams(new AttrObject(37L,objectId),dbWorker.getAttrAccessType(37L),new Date(Utils.getCurrentTimeLong())));
-        paramsI.update(new TTParams(new AttrObject(39L,objectId),dbWorker.getAttrAccessType(39L),""+dbWorker.getObjectIdForValue(userName)));
+        paramsI.create(new TTParams(new AttrObject(36L,objectId),dbWorker.getAttrAccessType(36L),new Date(Utils.getCurrentTimeLong())));
+        paramsI.create(new TTParams(new AttrObject(37L,objectId),dbWorker.getAttrAccessType(37L),new Date(Utils.getCurrentTimeLong())));
+        paramsI.create(new TTParams(new AttrObject(38L,objectId),dbWorker.getAttrAccessType(38L),""+dbWorker.getObjectIdForValue(userName)));
+        paramsI.create(new TTParams(new AttrObject(39L,objectId),dbWorker.getAttrAccessType(39L),""+dbWorker.getObjectIdForValue(userName)));
         response.sendRedirect("index.jsp");
 
 
 
-        Part filePart = request.getPart("file");
-        InputStream fileContent = filePart.getInputStream();
-        OutputStream outputStream = null;
-
-        try {
-
-            outputStream =
-                    new FileOutputStream(new File(imgPath+"\\img\\100.jpg"));
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = fileContent.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fileContent != null) {
-                try {
-                    fileContent.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    // outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }*/
+        dbWorker.close();
     }
 }

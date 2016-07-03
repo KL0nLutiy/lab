@@ -104,4 +104,17 @@ public class TTParams {
     public void setPriority(Long priority) {
         this.priority = priority;
     }
+
+    @Override
+    public String toString() {
+        return "TTParams{" +
+                "attrObject=" + attrObject +
+                ", attrAccessType=" + attrAccessType +
+                ", value='" + value + '\'' +
+                ", data='" + data + '\'' +
+                ", showOrder=" + showOrder +
+                ", dateValue=" + dateValue +
+                ", priority=" + priority +
+                '}';
+    }
 }

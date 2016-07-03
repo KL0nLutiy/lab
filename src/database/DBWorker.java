@@ -11,6 +11,7 @@ import java.util.*;
 import database.entities.TTParams;
 import oracle.jdbc.proxy.annotation.Pre;
 import org.apache.log4j.Logger;
+import sun.rmi.runtime.Log;
 
 /**
  * Created by Vlad on 24.06.2016.
@@ -92,8 +93,10 @@ public class DBWorker {
             if(rs.next()){
                 attrId=rs.getLong(1);
             }
+            log.info("Attr id: "+attrId+" for value: "+attrId);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get attr id: "+e.getMessage());
         }
 
         return attrId;
@@ -109,8 +112,10 @@ public class DBWorker {
             if(rs.next()){
                 password = rs.getString(1);
             }
+            log.info("Password for user: "+username);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get password for user: "+username);
         }
         return password;
     }
@@ -125,43 +130,13 @@ public class DBWorker {
             if(rs.next() && rs.getLong(1)==1L){
                 isAdmin = true;
             }
+            log.info("User: "+username+" isAdmin: "+isAdmin);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get isAdmin for user: "+username);
         }
         return isAdmin;
     }
-
-    /*public Map<Long,Map<String, String>> getAllGoods() {
-        String goodsAllSelect  = "SELECT o.OBJECT_ID, a.NAME, CASE WHEN p.VALUE IS NULL THEN TO_CHAR(p.DATE_VALUE) ELSE p.VALUE END, o.NAME " +
-                "FROM TT_OBJECTS o, TT_ATTRIBUTES a, TT_PARAMS p " +
-                "WHERE p.OBJECT_ID = o.OBJECT_ID AND a.ATTR_ID = ANY (SELECT ATTR_ID FROM TT_ATTR_OBJECT_TYPES WHERE OBJECT_TYPE_ID = o.OBJECT_TYPE_ID AND OBJECT_TYPE_ID <> 1 AND OBJECT_TYPE_ID <> 2 AND OBJECT_TYPE_ID <> 9) AND p.ATTR_ID = a.ATTR_ID ";
-
-        Map<Long,Map<String, String>> map = new TreeMap<>();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(goodsAllSelect);
-            HashMap<String, String> insideMap = null;
-            long objectId=0L;
-            while (rs.next()) {
-                objectId = rs.getLong(1);
-                if(map.get(objectId)==null) {
-                    insideMap = new HashMap<>();
-                    insideMap.put("name",rs.getString(4));
-                    map.put(objectId,insideMap);
-                    //System.out.println("ObjectId "+objectId+" attr "+"name"+" value "+rs.getString(4));
-                }
-                //System.out.println("ObjectId "+objectId+" attr "+rs.getString(2)+" value "+rs.getString(3));
-                insideMap.put(rs.getString(2),rs.getString(3));
-            }
-            map.put(objectId,insideMap);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return map;
-
-    }*/
 
     public Map<Long,Map<String, String>> getGoods(long objectTypeId){
 
@@ -198,32 +173,33 @@ public class DBWorker {
                     insideMap = new HashMap<>();
                     insideMap.put("name",rs.getString(4));
                     map.put(objectId,insideMap);
-                    //System.out.println("ObjectId "+objectId+" attr "+"name"+" value "+rs.getString(4));
                 }
-                //System.out.println("ObjectId "+objectId+" attr "+rs.getString(2)+" value "+rs.getString(3));
                 insideMap.put(rs.getString(2),rs.getString(3));
             }
             map.put(objectId,insideMap);
+            log.info("Getting goods success");
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Getting goods failed: "+e.getMessage());
         }
 
         return map;
     }
 
-    public String getAdminById(long id){
+    public String getAdminById(long objectId){
         String adminSelect = "SELECT NAME FROM TT_OBJECTS WHERE OBJECT_ID = ?";
         String admin = "";
         try {
             PreparedStatement pstmt = connection.prepareStatement(adminSelect);
-            pstmt.setLong(1,id);
+            pstmt.setLong(1,objectId);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 admin=rs.getString(1);
             }
-
+            log.info("Admin name: "+admin+" for object id: "+objectId);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get admin name for object id: "+objectId+" "+e.getMessage());
         }
 
         return admin;
@@ -239,8 +215,10 @@ public class DBWorker {
             for(int i = 0; rs.next(); i++){
                 firstLastName+=rs.getString(1)+" ";
             }
+            log.info("User fist, last name: "+firstLastName+" for user: "+username);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get user first, last name for user: "+username);
         }
 
         return firstLastName;
@@ -256,8 +234,10 @@ public class DBWorker {
             if(rs.next()) {
                 objectId = rs.getLong(1);
             }
+            log.info("Get object id: "+objectId+" for value: "+value);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't object id: "+objectId+" for value: "+value+" "+e.getMessage());
         }
 
         return objectId;
@@ -288,8 +268,10 @@ public class DBWorker {
             while(rs.next()){
                 orderList.add(new OrderInfo(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
             }
+            log.info("Order list for user: "+username+" success");
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get order list for user: "+username+" "+e.getMessage());
         }
 
         return orderList;
@@ -305,8 +287,10 @@ public class DBWorker {
             if(rs.next()) {
                 version=rs.getLong(1);
             }
+            log.info("Version: "+version+" for object "+objectId);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get version for object id:"+objectId);
         }
 
         return version;
@@ -322,25 +306,29 @@ public class DBWorker {
             if(rs.next()) {
                 objectTypeId=rs.getLong(1);
             }
+            log.info("Object type id: "+objectTypeId+" for object: "+objectId);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get object type id for object: "+objectId);
         }
 
         return objectTypeId;
     }
 
-    public Long getAttrIdForName(String value){
+    public Long getAttrIdForName(String name){
         String attrIdSelect = "SELECT ATTR_ID FROM TT_ATTRIBUTES WHERE NAME = ?";
         Long attrId=0L;
         try {
             PreparedStatement pstmt = connection.prepareStatement(attrIdSelect);
-            pstmt.setString(1,value);
+            pstmt.setString(1,name);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
                 attrId=rs.getLong(1);
             }
+            log.info("Attr id: "+attrId+" for name: "+name);
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get attr id for name: "+name+" "+e.getMessage());
         }
 
         return attrId;
@@ -356,8 +344,10 @@ public class DBWorker {
             while (rs.next()) {
                 list.add(rs.getString(1));
             }
+            log.info("Attributes for goodsType: "+goodsType+" success");
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Can't get attributes for goodsType"+goodsType+" "+e.getMessage());
         }
 
         return list;
@@ -366,8 +356,10 @@ public class DBWorker {
     public void close(){
         try {
             connection.close();
+            log.info("Connection closed success");
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("Connection closed failed "+e.getMessage());
         }
     }
 }

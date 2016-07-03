@@ -136,4 +136,22 @@ public class TTObjectType implements Serializable {
     public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
+
+    @Override
+    public String toString() {
+        return "TTObjectType{" +
+                "objectTypeId=" + objectTypeId +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", isClass=" + isClass +
+                ", isSystem=" + isSystem +
+                ", isSearchable=" + isSearchable +
+                ", alias='" + alias + '\'' +
+                ", flags=" + flags +
+                ", properties='" + properties + '\'' +
+                ", isAbstract=" + isAbstract +
+                ", internalName='" + internalName + '\'' +
+                '}';
+    }
 }

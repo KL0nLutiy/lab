@@ -61,4 +61,14 @@ public class TTReferences {
     public void setAttrAccessType(Long attrAccessType) {
         this.attrAccessType = attrAccessType;
     }
+
+    @Override
+    public String toString() {
+        return "TTReferences{" +
+                "attrObjectReference=" + attrObjectReference +
+                ", showOrder=" + showOrder +
+                ", priority=" + priority +
+                ", attrAccessType=" + attrAccessType +
+                '}';
+    }
 }
