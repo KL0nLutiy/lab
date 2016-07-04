@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet implements javax.servlet.Servlet {
 
         String username = Utils.toUTF8Request(request.getParameter("username"));
 
-        if(dbWorker.getObjectIdForValue(username)==0L) {
+        if(dbWorker.getObjectIdForValue(username)==null) {
             request.getSession().setAttribute("result", "error1");
             RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
             rd.forward(request, response);
@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet implements javax.servlet.Servlet {
 
         String password = Utils.md5Custom(Utils.toUTF8Request(request.getParameter("password")));
 
-        if(!dbWorker.getPasswordForUsername(username).equals(password)) {
+        if(dbWorker.getPasswordForUsername(username)!=null && !dbWorker.getPasswordForUsername(username).equals(password)) {
             request.getSession().setAttribute("result", "error2");
             RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
             rd.forward(request, response);
@@ -46,7 +46,6 @@ public class LoginServlet extends HttpServlet implements javax.servlet.Servlet {
 
         Cookie loginCookie = new Cookie("user",username);
         Cookie adminCookie = new Cookie("admin",""+dbWorker.isAdmin(username));
-        dbWorker.close();
         loginCookie.setMaxAge(30*60);
         adminCookie.setMaxAge(30*60);
         response.addCookie(loginCookie);

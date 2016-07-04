@@ -1,6 +1,6 @@
-<%@ page import="database.DBWorker" %>
 <%@ page import="java.util.List" %>
-<%@ page import="database.OrderInfo" %><%--
+<%@ page import="database.OrderInfo" %>
+<%@ page import="database.DBWorker" %><%--
   Created by IntelliJ IDEA.
   User: Vlad
   Date: 25.06.2016

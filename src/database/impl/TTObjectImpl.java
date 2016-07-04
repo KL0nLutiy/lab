@@ -29,7 +29,7 @@ public class TTObjectImpl implements TTObjectInterface {
         object.setObjectId(id);
         object.setObjectClassId(id);
         object.setVersion(1L);
-        dbWorker.close();
+        //dbWorker.close();
         log.info("Create object"+object.toString());
         manager.persist(object);
         return id;

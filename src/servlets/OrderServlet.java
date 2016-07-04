@@ -104,7 +104,6 @@ public class OrderServlet extends HttpServlet implements javax.servlet.Servlet {
         params.create(new TTParams(new AttrObject(37L,orderObjectId),dbWorker.getAttrAccessType(37L),new Date(Utils.getCurrentTimeLong())));
         params.create(new TTParams(new AttrObject(38L,orderObjectId),dbWorker.getAttrAccessType(38L),""+userObjectId));
         params.create(new TTParams(new AttrObject(39L,orderObjectId),dbWorker.getAttrAccessType(39L),""+userObjectId));
-        dbWorker.close();
 
         AttrObjectReference attrObjectReference1 = new AttrObjectReference(32L,userObjectId,orderObjectId);
         references.create(new TTReferences(attrObjectReference1,1L));

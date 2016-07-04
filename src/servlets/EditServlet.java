@@ -14,7 +14,6 @@ import database.interfaces.TTParamsInterface;
 import utils.Utils;
 
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -94,7 +93,6 @@ public class EditServlet extends HttpServlet implements javax.servlet.Servlet {
 
         paramsI.update(new TTParams(new AttrObject(37L,objectId),dbWorker.getAttrAccessType(37L),new Date(Utils.getCurrentTimeLong())));
         paramsI.update(new TTParams(new AttrObject(39L,objectId),dbWorker.getAttrAccessType(39L),""+dbWorker.getObjectIdForValue(userName)));
-        dbWorker.close();
         response.sendRedirect("index.jsp");
 
     }

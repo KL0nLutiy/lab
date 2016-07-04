@@ -1,6 +1,6 @@
-<%@ page import="database.DBWorker" %>
 <%@ page import="utils.Utils" %>
-<%@ page import="java.util.*" %><%--
+<%@ page import="java.util.*" %>
+<%@ page import="database.DBWorker" %><%--
   Created by IntelliJ IDEA.
   User: Vlad
   Date: 25.06.2016
@@ -255,7 +255,6 @@
             </div>
             <%
                 }
-                dbWorker.close();
             %>
 
         </div>

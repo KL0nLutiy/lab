@@ -27,7 +27,6 @@ public class TTObjectTypeImpl implements TTObjectTypeInterface{
         DBWorker dbWorker = new DBWorker();
         long id = dbWorker.getId();
         objectType.setObjectTypeId(id);
-        dbWorker.close();
         log.info("Create object type "+objectType.toString());
         manager.persist(objectType);
         return id;

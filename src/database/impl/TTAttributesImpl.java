@@ -27,7 +27,6 @@ public class TTAttributesImpl implements TTAttributeInterface {
     public long create(TTAttributes attributes) {
         DBWorker dbWorker = new DBWorker();
         long id = dbWorker.getId();
-        dbWorker.close();
         attributes.setAttrId(id);
         log.info("Create attribute "+attributes.toString());
         manager.persist(attributes);

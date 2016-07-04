@@ -7,7 +7,6 @@ import database.entities.TTObject;
 import database.entities.TTParams;
 import database.entities.embeded.AttrObject;
 import database.entities.embeded.AttrObjectType;
-import database.impl.TTAttributesImpl;
 import database.interfaces.TTAttrObjectTypeInterface;
 import database.interfaces.TTAttributeInterface;
 import database.interfaces.TTObjectInterface;
@@ -16,7 +15,6 @@ import org.apache.log4j.Logger;
 import utils.Utils;
 
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
@@ -51,7 +49,6 @@ public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
         String selectedType = Utils.toUTF8Request(request.getParameter("goodsType"));
         DBWorker dbWorker = new DBWorker();
         List<String> list = dbWorker.getAttrsForGoods(Long.parseLong(selectedType));
-        dbWorker.close();
 
         request.getSession().setAttribute("list", list);
         request.getSession().setAttribute("goodsType", selectedType);
@@ -155,9 +152,5 @@ public class AddServlet extends HttpServlet implements javax.servlet.Servlet {
         paramsI.create(new TTParams(new AttrObject(38L,objectId),dbWorker.getAttrAccessType(38L),""+dbWorker.getObjectIdForValue(userName)));
         paramsI.create(new TTParams(new AttrObject(39L,objectId),dbWorker.getAttrAccessType(39L),""+dbWorker.getObjectIdForValue(userName)));
         response.sendRedirect("index.jsp");
-
-
-
-        dbWorker.close();
     }
 }

@@ -37,11 +37,11 @@ public class RegistrationServlet extends HttpServlet implements javax.servlet.Se
 
             String errors = "";
 
-            if(!username.isEmpty() && dbWorker.getAttrIdForValue(username)==0L) {
+            if(!username.isEmpty() && dbWorker.getAttrIdForValue(username)!=null) {
                     errors+="error1";
             }
 
-            if(!email.isEmpty() && dbWorker.getAttrIdForValue(email)==0L){
+            if(!email.isEmpty() && dbWorker.getAttrIdForValue(email)!=null){
                     errors+="error2";
             }
 
@@ -73,8 +73,6 @@ public class RegistrationServlet extends HttpServlet implements javax.servlet.Se
             paramsI.create(new TTParams(new AttrObject(37L,id),dbWorker.getAttrAccessType(37L),new Date(Utils.getCurrentTimeLong())));
             paramsI.create(new TTParams(new AttrObject(38L,id),dbWorker.getAttrAccessType(38L),""+userId));
             paramsI.create(new TTParams(new AttrObject(39L,id),dbWorker.getAttrAccessType(39L),""+userId));
-
-            dbWorker.close();
 
             request.getSession().setAttribute("result", "Registration successful");
             RequestDispatcher rd = request.getRequestDispatcher("registration.jsp");
